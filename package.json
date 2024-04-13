@@ -153,6 +153,23 @@
           "light": "./media/file-icon.png"
         }
       }
+    ],
+    "grammars": [
+      {
+        "language": "user",
+        "scopeName": "text.html.markdown",
+        "path": "./syntaxes/markdown-aibook.tmLanguage.json"
+      },
+      {
+        "language": "system",
+        "scopeName": "text.html.markdown",
+        "path": "./syntaxes/markdown-aibook.tmLanguage.json"
+      },
+      {
+        "language": "assistant",
+        "scopeName": "text.html.markdown",
+        "path": "./syntaxes/markdown-aibook.tmLanguage.json"
+      }
     ]
   },
   "displayName": "LLM Book",
