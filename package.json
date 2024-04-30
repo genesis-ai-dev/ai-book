@@ -1,26 +1,26 @@
 {
   "name": "llm-book",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "repository": {
     "url": "https://github.com/JacksonKearl/ai-book"
   },
   "icon": "media/iconic.png",
   "main": "./dist/extension.js",
   "devDependencies": {
-    "@types/vscode": "^1.77.0",
     "@types/mocha": "^10.0.1",
-    "eslint": "^8.33.0",
+    "@types/vscode": "^1.77.0",
+    "@types/webpack-env": "^1.18.0",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
-    "mocha": "^10.1.0",
-    "typescript": "^4.9.4",
     "@vscode/test-web": "^0.0.34",
-    "ts-loader": "^9.4.2",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1",
-    "@types/webpack-env": "^1.18.0",
     "assert": "^2.0.0",
-    "process": "^0.11.10"
+    "eslint": "^8.33.0",
+    "mocha": "^10.1.0",
+    "process": "^0.11.10",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "activationEvents": [],
   "browser": "./dist/web/extension.js",
@@ -191,7 +191,7 @@
   "dependencies": {
     "@dqbd/tiktoken": "^1.0.7",
     "eslint-config-prettier": "^9.0.0",
-    "gjp-4-gpt": "^0.0.6",
+    "gjp-4-gpt": "^0.0.8",
     "node-fetch": "^3.3.1"
   }
 }
