@@ -16,10 +16,21 @@ export function activate(context: vscode.ExtensionContext) {
         documentId: string | undefined,
         documentContent: string | undefined,
         cancellationToken: vscode.CancellationToken,
+        preSelectedTranslationLanguage: string | undefined,
       ) => {
         if (!documentId) {
           vscode.window.showErrorMessage("Document ID is required.")
           return
+        }
+        let translationLanguage = preSelectedTranslationLanguage
+        if (!translationLanguage) {
+          translationLanguage =
+            (await vscode.window.showInputBox({
+              prompt:
+                "Enter the translation language (e.g., 'English' for English)",
+              placeHolder: "English",
+              value: "English",
+            })) || "English"
         }
         const timestamp = new Date().toISOString().replace(/[:-]|\.\d{3}/g, "")
         const fileName = `${documentId}-${timestamp}.llm`
@@ -33,7 +44,9 @@ export function activate(context: vscode.ExtensionContext) {
         const notebook = await MessageJSONSerializer.deserializeNotebook(
           Uint8Array.from(
             new TextEncoder().encode(
-              JSON.stringify(defaultSerializedNotebook(documentContent)),
+              JSON.stringify(
+                defaultSerializedNotebook(documentContent, translationLanguage),
+              ),
             ),
           ),
           cancellationToken,

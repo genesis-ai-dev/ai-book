@@ -8,12 +8,14 @@ type SerializedNotebook = {
 
 export const defaultSerializedNotebook = (
   contentToTranslate?: string,
+  translationLanguage?: string,
 ): SerializedNotebook => {
   return {
     messages: [
       {
-        content:
-          "You are a translator. You will translate the content provided and return it as valid markdown",
+        content: `You are a translator. \n You will translate the content provided into ${
+          translationLanguage ?? "a language to be specified later"
+        } and return it as valid markdown`,
         role: "system",
       },
       {
