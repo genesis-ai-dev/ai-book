@@ -20,7 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
         "llm-book-llama",
         notebookType,
         "LLaMa",
-        ControllerFromRunner(LLaMaRunner)
+        ControllerFromRunner(LLaMaRunner),
       )
 
       notebookControllerLLaMa.supportedLanguages = [
@@ -90,7 +90,7 @@ export function activate(context: vscode.ExtensionContext) {
 function getTokenMessages(
   config: vscode.WorkspaceConfiguration,
   enc: Tiktoken,
-  text: string
+  text: string,
 ) {
   const dollarsPerKiloToken = config.get<number>("dollarsPerKiloToken") ?? 0
 

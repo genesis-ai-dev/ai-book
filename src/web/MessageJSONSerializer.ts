@@ -6,15 +6,28 @@ type SerializedNotebook = {
   parameters: Record<string, any>
 }
 
+export const defaultSerializedNotebook = (
+  contentToTranslate?: string,
+): SerializedNotebook => {
+  return {
+    messages: [
+      {
+        content:
+          "You are a translator. You will translate the content provided and return it as valid markdown",
+        role: "system",
+      },
+      {
+        content: contentToTranslate ?? "Insert translation content here",
+        role: "user",
+      },
+    ],
+    parameters: {},
+  }
+}
+
 export const MessageJSONSerializer: vscode.NotebookSerializer = {
   deserializeNotebook(content: Uint8Array): vscode.NotebookData {
-    let serialized: SerializedNotebook = {
-      messages: [
-        { content: "You are a helpful assistant.", role: "system" },
-        { content: "Who are you?", role: "user" },
-      ],
-      parameters: {},
-    }
+    let serialized: SerializedNotebook = defaultSerializedNotebook()
 
     const str = new TextDecoder().decode(content)
     try {

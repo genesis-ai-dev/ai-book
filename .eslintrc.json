@@ -19,7 +19,8 @@
     "eqeqeq": "warn",
     "no-throw-literal": "warn",
     "@typescript-eslint/no-explicit-any": 0,
-    "no-unsafe-optional-chaining": ["error", { "disallowArithmeticOperators": true }]
+    "no-unsafe-optional-chaining": ["error", { "disallowArithmeticOperators": true }],
+    "@typescript-eslint/no-inferrable-types": 0
   },
   "ignorePatterns": ["**/*.d.ts"]
 }

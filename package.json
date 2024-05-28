@@ -39,6 +39,10 @@
         "shortTitle": "Configure LLM",
         "command": "llm-book.configureParameters",
         "enablement": "notebookType == llm-book"
+      },
+      {
+        "title": "Translate File",
+        "command": "llm-book.translateFile"
       }
     ],
     "configuration": [

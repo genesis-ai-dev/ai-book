@@ -2,12 +2,82 @@ import * as vscode from "vscode"
 import {
   MessageJSONSerializer,
   MessageJSONSerializerOptions,
+  defaultSerializedNotebook,
 } from "./MessageJSONSerializer"
 import { ControllerFromRunner } from "./ControllerFromRunner"
 import { MakeOpenAiRunner } from "./OpenAiRunner"
 
 export const notebookType = "llm-book"
 export function activate(context: vscode.ExtensionContext) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "llm-book.translateDocument",
+      async (
+        documentId: string | undefined,
+        documentContent: string | undefined,
+        cancellationToken: vscode.CancellationToken,
+      ) => {
+        if (!documentId) {
+          vscode.window.showErrorMessage("Document ID is required.")
+          return
+        }
+        const timestamp = new Date().toISOString().replace(/[:-]|\.\d{3}/g, "")
+        const fileName = `${documentId}-${timestamp}.llm`
+        const workspaceFolder =
+          vscode.workspace.workspaceFolders?.[0].uri.fsPath
+        if (!workspaceFolder) {
+          vscode.window.showErrorMessage("No workspace folder found.")
+          return
+        }
+        const filePath = vscode.Uri.file(`${workspaceFolder}/${fileName}`)
+        const notebook = await MessageJSONSerializer.deserializeNotebook(
+          Uint8Array.from(
+            new TextEncoder().encode(
+              JSON.stringify(defaultSerializedNotebook(documentContent)),
+            ),
+          ),
+          cancellationToken,
+        )
+        const notebookBuffer = await MessageJSONSerializer.serializeNotebook(
+          notebook,
+          cancellationToken,
+        )
+        await vscode.workspace.fs.writeFile(filePath, notebookBuffer)
+        vscode.window.showInformationMessage(
+          `New .llm file created: ${fileName}`,
+        )
+      },
+    ),
+  )
+  context.subscriptions.push(
+    vscode.commands.registerCommand("llm-book.translateFile", async () => {
+      const fileUri = await vscode.window.showOpenDialog({
+        canSelectMany: false,
+        openLabel: "Select a file to translate",
+        filters: {
+          "Text Files": ["txt", "md"],
+        },
+      })
+      if (fileUri && fileUri[0]) {
+        console.log({ fileUri })
+        try {
+          const fileData = await vscode.workspace.fs.readFile(fileUri[0])
+          const documentContent = new TextDecoder("utf-8").decode(fileData)
+          console.log({ documentContent })
+          const documentId = fileUri[0].path.split("/").pop()?.split(".")[0] // Extract file name as ID
+          vscode.commands.executeCommand(
+            "llm-book.translateDocument",
+            documentId,
+            documentContent,
+          )
+        } catch (error) {
+          console.error(error)
+        }
+      } else {
+        vscode.window.showInformationMessage("No file selected.")
+      }
+    }),
+  )
   const notebookSerializer = vscode.workspace.registerNotebookSerializer(
     notebookType,
     MessageJSONSerializer,
