@@ -7,11 +7,11 @@ import {
 import { ControllerFromRunner } from "./ControllerFromRunner"
 import { MakeOpenAiRunner } from "./OpenAiRunner"
 
-export const notebookType = "llm-book"
+export const notebookType = "ai-translate"
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      "llm-book.translateDocument",
+      "ai-translate.translateDocument",
       async (
         documentId: string | undefined,
         documentContent: string | undefined,
@@ -63,7 +63,7 @@ export function activate(context: vscode.ExtensionContext) {
     ),
   )
   context.subscriptions.push(
-    vscode.commands.registerCommand("llm-book.translateFile", async () => {
+    vscode.commands.registerCommand("ai-translate.translateFile", async () => {
       const fileUri = await vscode.window.showOpenDialog({
         canSelectMany: false,
         openLabel: "Select a file to translate",
@@ -79,7 +79,7 @@ export function activate(context: vscode.ExtensionContext) {
           console.log({ documentContent })
           const documentId = fileUri[0].path.split("/").pop()?.split(".")[0] // Extract file name as ID
           vscode.commands.executeCommand(
-            "llm-book.translateDocument",
+            "ai-translate.translateDocument",
             documentId,
             documentContent,
           )
@@ -98,7 +98,7 @@ export function activate(context: vscode.ExtensionContext) {
   )
 
   const configureParametersCommand = vscode.commands.registerCommand(
-    "llm-book.configureParameters",
+    "ai-translate.configureParameters",
     async function recurse(arg) {
       const activeNotebookUri = vscode.window.activeNotebookEditor?.notebook.uri
       const clickedNotebookUri: vscode.Uri | undefined =
@@ -202,7 +202,7 @@ export function activate(context: vscode.ExtensionContext) {
   )
 
   const updateOpenAiKeyCommand = vscode.commands.registerCommand(
-    "llm-book.updateOpenAIKey",
+    "ai-translate.updateOpenAIKey",
     async () => {
       const apiKey = await vscode.window.showInputBox({
         ignoreFocusOut: true,
@@ -213,13 +213,13 @@ export function activate(context: vscode.ExtensionContext) {
         return
       }
 
-      await context.secrets.store("ai-book.openAI.apiKey", apiKey)
+      await context.secrets.store("ai-translate.openAI.apiKey", apiKey)
       return apiKey
     },
   )
 
   const notebookController = vscode.notebooks.createNotebookController(
-    "llm-book-openai",
+    "ai-translate-openai",
     notebookType,
     "OpenAI",
     ControllerFromRunner(MakeOpenAiRunner(context)),

@@ -16,12 +16,12 @@ Fun fact! The `.llm` format used by notebooks is on-disk represented in the offi
 
 ### Pricing
 
-The extension is free to use. OpenAI isn't. Configure `llm-book.openAI.dollarsPerKiloToken` to show how much a given cell or notebook will cost to execute. Configure `llm-book.openAI.showTokenCount` to hide the token counts on cells and notebooks.
+The extension is free to use. OpenAI isn't. Configure `ai-translate.openAI.dollarsPerKiloToken` to show how much a given cell or notebook will cost to execute. Configure `ai-translate.openAI.showTokenCount` to hide the token counts on cells and notebooks.
 
 ## LLaMa?
 
-There is initial support for LLaMa models (anything CLI-powered, really) but it's wonky (the prompt is echoed back in the response, for one). Also, the base LLaMa models aren't well suited for conversational settings, and do not support the `system`, `user`, `assistant` breakdown. If you are interested in furthering this support, PR's are more than welcome. Set `llm-book.LLaMa.binary` to begin.
+There is initial support for LLaMa models (anything CLI-powered, really) but it's wonky (the prompt is echoed back in the response, for one). Also, the base LLaMa models aren't well suited for conversational settings, and do not support the `system`, `user`, `assistant` breakdown. If you are interested in furthering this support, PR's are more than welcome. Set `ai-translate.LLaMa.binary` to begin.
 
 ## OpenAI?
 
-By default the extension queries against OpenAI APIs (`https://api.openai.com/v1/chat/completions`), however this is easily configured via the `llm-book.openAI.endpoint` setting. Your API key is added in the notebook's controls.
+By default the extension queries against OpenAI APIs (`https://api.openai.com/v1/chat/completions`), however this is easily configured via the `ai-translate.openAI.endpoint` setting. Your API key is added in the notebook's controls.

@@ -12,14 +12,14 @@ export const LLaMaRunner: Runner = async (
   token,
 ) => {
   return new Promise((c, e) => {
-    const config = vscode.workspace.getConfiguration("llm-book.LLaMa")
+    const config = vscode.workspace.getConfiguration("ai-translate.LLaMa")
 
     const binary = config.get<string>("binary")
     const globalArgs = config.get<string[]>("args")
 
     if (!binary || !globalArgs) {
       throw Error(
-        "LLaMa Runner: Missing binary and/or args. Configure in vscode's settings as `llm-book.LLaMa.binary` and `llm-book.LLaMa.args`.",
+        "LLaMa Runner: Missing binary and/or args. Configure in vscode's settings as `ai-translate.LLaMa.binary` and `ai-translate.LLaMa.args`.",
       )
     }
 

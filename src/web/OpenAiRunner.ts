@@ -4,15 +4,17 @@ import { AsAsyncIterable, ReadableFromOpenAIResponse } from "gjp-4-gpt"
 
 export const MakeOpenAiRunner: (context: vscode.ExtensionContext) => Runner =
   (context) => async (messages, notebook, clearOutput, appendOutput) => {
-    let apiKey = await context.secrets.get("ai-book.openAI.apiKey")
+    let apiKey = await context.secrets.get("ai-translate.openAI.apiKey")
     if (!apiKey) {
-      apiKey = await vscode.commands.executeCommand("llm-book.updateOpenAIKey")
+      apiKey = await vscode.commands.executeCommand(
+        "ai-translate.updateOpenAIKey",
+      )
       if (!apiKey) {
         return
       }
     }
 
-    const config = vscode.workspace.getConfiguration("llm-book.openAI")
+    const config = vscode.workspace.getConfiguration("ai-translate.openAI")
     const model = config.get<string>("model") ?? "gpt-3.5-turbo"
     const endpoint =
       config.get<string>("endpoint") ??

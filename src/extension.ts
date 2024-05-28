@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
       enabled = true
 
       const notebookControllerLLaMa = vscode.notebooks.createNotebookController(
-        "llm-book-llama",
+        "ai-translate-llama",
         notebookType,
         "LLaMa",
         ControllerFromRunner(LLaMaRunner),
@@ -36,7 +36,9 @@ export function activate(context: vscode.ExtensionContext) {
   const enc = get_encoding("cl100k_base") // technically, should change based on model/kernel.
   vscode.notebooks.registerNotebookCellStatusBarItemProvider(notebookType, {
     provideCellStatusBarItems(cell) {
-      const openAiConfig = vscode.workspace.getConfiguration("llm-book.openAI")
+      const openAiConfig = vscode.workspace.getConfiguration(
+        "ai-translate.openAI",
+      )
       if (!openAiConfig.get<boolean>("showTokenCount")) {
         return []
       }
@@ -50,7 +52,9 @@ export function activate(context: vscode.ExtensionContext) {
   const sbi = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right)
 
   vscode.window.onDidChangeActiveNotebookEditor((e) => {
-    const openAiConfig = vscode.workspace.getConfiguration("llm-book.openAI")
+    const openAiConfig = vscode.workspace.getConfiguration(
+      "ai-translate.openAI",
+    )
     if (
       !openAiConfig.get<boolean>("showTokenCount") ||
       e?.notebook.notebookType !== notebookType
@@ -74,14 +78,14 @@ export function activate(context: vscode.ExtensionContext) {
       .join(" | ")
   })
 
-  const llamaConfig = vscode.workspace.getConfiguration("llm-book.LLaMa")
+  const llamaConfig = vscode.workspace.getConfiguration("ai-translate.LLaMa")
 
   if (llamaConfig.get("binary")) {
     enableLLaMa()
   }
 
   vscode.workspace.onDidChangeConfiguration((e) => {
-    if (e.affectsConfiguration("llm-book.LLaMa.binary")) {
+    if (e.affectsConfiguration("ai-translate.LLaMa.binary")) {
       enableLLaMa()
     }
   })

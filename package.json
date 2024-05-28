@@ -1,8 +1,8 @@
 {
-  "name": "llm-book",
+  "name": "ai-translate",
   "version": "0.1.5",
   "repository": {
-    "url": "https://github.com/JacksonKearl/ai-book"
+    "url": "https://github.com/JacksonKearl/ai-translate"
   },
   "icon": "media/iconic.png",
   "main": "./dist/extension.js",
@@ -31,52 +31,52 @@
     "commands": [
       {
         "title": "Update OpenAPI Api Key",
-        "command": "llm-book.updateOpenAIKey",
-        "enablement": "notebookType == llm-book"
+        "command": "ai-translate.updateOpenAIKey",
+        "enablement": "notebookType == ai-translate"
       },
       {
         "title": "Configure LLM Parameters",
         "shortTitle": "Configure LLM",
-        "command": "llm-book.configureParameters",
-        "enablement": "notebookType == llm-book"
+        "command": "ai-translate.configureParameters",
+        "enablement": "notebookType == ai-translate"
       },
       {
         "title": "Translate File",
-        "command": "llm-book.translateFile"
+        "command": "ai-translate.translateFile"
       }
     ],
     "configuration": [
       {
         "title": "LLM Book",
         "properties": {
-          "llm-book.openAI.model": {
+          "ai-translate.openAI.model": {
             "type": "string",
-            "markdownDescription": "Model to use. A `model` field specified in `#llm-book.openAI.parameters#` or the notebooks own parameters will override this.",
+            "markdownDescription": "Model to use. A `model` field specified in `#ai-translate.openAI.parameters#` or the notebooks own parameters will override this.",
             "default": "gpt-3.5-turbo"
           },
-          "llm-book.openAI.endpoint": {
+          "ai-translate.openAI.endpoint": {
             "type": "string",
             "default": "https://api.openai.com/v1/chat/completions"
           },
-          "llm-book.openAI.parameters": {
+          "ai-translate.openAI.parameters": {
             "type": "object",
             "default": {},
-            "markdownDescription": "Additional data to send to `#llm-book.openAI.endpoint#` as fields in body's JSON. Used for fine configuration of runtime. Parameters configured per-notebook override this."
+            "markdownDescription": "Additional data to send to `#ai-translate.openAI.endpoint#` as fields in body's JSON. Used for fine configuration of runtime. Parameters configured per-notebook override this."
           },
-          "llm-book.openAI.showTokenCount": {
+          "ai-translate.openAI.showTokenCount": {
             "type": "boolean",
             "default": true,
             "markdownDescription": "Whether to show how many tokens a cell contains. Note: this assumes the GPT 3.5/4's tokenizer, `cl100k_base`"
           },
-          "llm-book.openAI.dollarsPerKiloToken": {
+          "ai-translate.openAI.dollarsPerKiloToken": {
             "type": "number",
             "default": 0,
             "markdownDescription": "Cost per 1,000 tokens. Set 0 to hide."
           },
-          "llm-book.LLaMa.binary": {
+          "ai-translate.LLaMa.binary": {
             "type": "string"
           },
-          "llm-book.LLaMa.args": {
+          "ai-translate.LLaMa.args": {
             "type": "array",
             "description": "Args with which to call the binary. The string `${messages}` will be replaced with the cell message data.",
             "additionalItems": {
@@ -89,17 +89,17 @@
     "menus": {
       "notebook/toolbar": [
         {
-          "command": "llm-book.updateOpenAIKey"
+          "command": "ai-translate.updateOpenAIKey"
         },
         {
-          "command": "llm-book.configureParameters",
+          "command": "ai-translate.configureParameters",
           "group": "navigation"
         }
       ]
     },
     "notebooks": [
       {
-        "type": "llm-book",
+        "type": "ai-translate",
         "displayName": "LLM Book",
         "selector": [
           {
@@ -144,7 +144,7 @@
         }
       },
       {
-        "id": "llm-book",
+        "id": "ai-translate",
         "aliases": [
           ""
         ],
