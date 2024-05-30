@@ -10,6 +10,17 @@ export type Runner = (
   token: vscode.CancellationToken,
 ) => Promise<void>
 
+export const appendContentToCell = async ({
+  content,
+  cell,
+}: {
+  content: string
+  cell: vscode.NotebookCell
+}): Promise<void> => {
+  const edit = new vscode.WorkspaceEdit()
+  edit.insert(cell.document.uri, cell.document.positionAt(Infinity), content)
+  await vscode.workspace.applyEdit(edit)
+}
 export const ControllerFromRunner =
   (runner: Runner) =>
   async (
@@ -81,7 +92,6 @@ export const ControllerFromRunner =
         )
         await vscode.workspace.applyEdit(edit)
       }
-
       const appendTrace = async (content: string) =>
         execution.appendOutput(
           new vscode.NotebookCellOutput([
