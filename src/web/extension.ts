@@ -2,9 +2,11 @@ import * as vscode from "vscode"
 import {
   MessageJSONSerializer,
   MessageJSONSerializerOptions,
-  defaultSerializedNotebook,
 } from "./MessageJSONSerializer"
-import { ControllerFromRunner } from "./ControllerFromRunner"
+import {
+  ControllerFromRunner,
+  appendContentToCell,
+} from "./ControllerFromRunner"
 import { MakeOpenAiRunner } from "./OpenAiRunner"
 
 export const notebookType = "ai-translate"
@@ -44,9 +46,10 @@ export function activate(context: vscode.ExtensionContext) {
         const notebook = await MessageJSONSerializer.deserializeNotebook(
           Uint8Array.from(
             new TextEncoder().encode(
-              JSON.stringify(
-                defaultSerializedNotebook(documentContent, translationLanguage),
-              ),
+              JSON.stringify({
+                messages: [],
+                parameters: {},
+              }),
             ),
           ),
           cancellationToken,
@@ -59,6 +62,60 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage(
           `New .llm file created: ${fileName}`,
         )
+        // Open the newly created file
+        const notebookDoc = await vscode.workspace.openNotebookDocument(
+          filePath,
+        )
+        const notebookEditor = await vscode.window.showNotebookDocument(
+          notebookDoc,
+        )
+
+        // Generate a new cell at the end of the notebook
+
+        await vscode.commands.executeCommand(
+          "notebook.cell.insertCodeCellBelow",
+        )
+        const cell = notebookEditor.notebook.cellAt(0)
+        await vscode.commands.executeCommand(
+          "notebook.cell.changeLanguage",
+          { start: cell.index, end: cell.index + 1 },
+          "system",
+        )
+        await appendContentToCell({
+          content: `You are a translator. \nYou will translate the content provided into ${
+            translationLanguage ?? "a language to be specified later"
+          } and return it as valid markdown. \nFirst explain the difficulties of the translation with the specific document given, then return the translation with the explanation of the specific difficulties above. Only return content in ${translationLanguage}`,
+          cell: cell,
+        })
+
+        await vscode.commands.executeCommand(
+          "notebook.cell.insertCodeCellBelow",
+        )
+        const contentCell = notebookEditor.notebook.cellAt(1)
+        await vscode.commands.executeCommand(
+          "notebook.cell.changeLanguage",
+          { start: contentCell.index, end: contentCell.index + 1 },
+          "user",
+        )
+        await appendContentToCell({
+          content: documentContent || "",
+          cell: contentCell,
+        })
+        //   "notebook.cell.insertCodeCellBelow",
+        // )
+        // const activeEditor = vscode.window.activeNotebookEditor
+        // if (activeEditor) {
+        //   const nextIndex = activeEditor.notebook.cellCount - 1 // Assuming the new cell is now the last cell
+        //   await vscode.commands.executeCommand(
+        //     "notebook.cell.changeLanguage",
+        //     { start: nextIndex, end: nextIndex + 1 },
+        //     "user",
+        //   )
+        // }
+
+        // await new Promise((resolve) => setTimeout(resolve, 3000))
+
+        vscode.commands.executeCommand("notebook.execute")
       },
     ),
   )
