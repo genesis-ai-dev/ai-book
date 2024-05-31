@@ -14,6 +14,7 @@
     "@typescript-eslint/parser": "^5.49.0",
     "@vscode/test-web": "^0.0.34",
     "assert": "^2.0.0",
+    "copy-webpack-plugin": "^12.0.2",
     "eslint": "^8.33.0",
     "mocha": "^10.1.0",
     "process": "^0.11.10",
@@ -43,6 +44,10 @@
       {
         "title": "Translate File",
         "command": "ai-translate.translateFile"
+      },
+      {
+        "title": "Translate Document",
+        "command": "ai-translate.translateDocument"
       }
     ],
     "configuration": [
@@ -181,7 +186,7 @@
   "engines": {
     "vscode": "^1.77.0"
   },
-  "publisher": "jaaxxx",
+  "publisher": "project-accelerate",
   "scripts": {
     "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
     "pretest": "npm run compile-all",

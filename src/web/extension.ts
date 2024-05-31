@@ -16,7 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
       "ai-translate.translateDocument",
       async (
         documentId: string | undefined,
-        documentContent: string | undefined,
+        documentContent: [string] | undefined,
         cancellationToken: vscode.CancellationToken,
         preSelectedTranslationLanguage: string | undefined,
       ) => {
@@ -97,25 +97,25 @@ export function activate(context: vscode.ExtensionContext) {
           { start: contentCell.index, end: contentCell.index + 1 },
           "user",
         )
-        await appendContentToCell({
-          content: documentContent || "",
-          cell: contentCell,
-        })
-        //   "notebook.cell.insertCodeCellBelow",
-        // )
-        // const activeEditor = vscode.window.activeNotebookEditor
-        // if (activeEditor) {
-        //   const nextIndex = activeEditor.notebook.cellCount - 1 // Assuming the new cell is now the last cell
-        //   await vscode.commands.executeCommand(
-        //     "notebook.cell.changeLanguage",
-        //     { start: nextIndex, end: nextIndex + 1 },
-        //     "user",
-        //   )
-        // }
-
-        // await new Promise((resolve) => setTimeout(resolve, 3000))
-
-        vscode.commands.executeCommand("notebook.execute")
+        if (!documentContent) {
+          return
+        }
+        for (const content of documentContent) {
+          if (!content) {
+            continue
+          }
+          const lastCell = notebookEditor.notebook.cellAt(
+            notebookEditor.notebook.cellCount - 1,
+          )
+          await appendContentToCell({
+            content: content,
+            cell: lastCell,
+          })
+          await vscode.commands.executeCommand("notebook.execute", {
+            start: lastCell.index,
+            end: lastCell.index + 1,
+          })
+        }
       },
     ),
   )
@@ -138,7 +138,7 @@ export function activate(context: vscode.ExtensionContext) {
           vscode.commands.executeCommand(
             "ai-translate.translateDocument",
             documentId,
-            documentContent,
+            documentContent.split("\n"),
           )
         } catch (error) {
           console.error(error)

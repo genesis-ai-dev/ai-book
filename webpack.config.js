@@ -2,6 +2,8 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 //@ts-check
 "use strict"
@@ -11,6 +13,7 @@
 
 const path = require("path")
 const webpack = require("webpack")
+const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 /** @type WebpackConfig */
 const webExtensionConfig = {
@@ -114,6 +117,13 @@ const nodeExtensionConfig = {
     ],
   },
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "node_modules/@dqbd/tiktoken/tiktoken_bg.wasm",
+        },
+      ],
+    }),
     // new webpack.optimize.LimitChunkCountPlugin({
     //   maxChunks: 1, // disable chunks by default since web extensions must be a single bundle
     // }),
