@@ -2,7 +2,7 @@
   "name": "ai-translate",
   "version": "0.1.5",
   "repository": {
-    "url": "https://github.com/JacksonKearl/ai-translate"
+    "url": "https://github.com/BenjaminScholtens/ai-book"
   },
   "icon": "media/iconic.png",
   "main": "./dist/extension.js",
