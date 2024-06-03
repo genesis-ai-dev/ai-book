@@ -84,7 +84,7 @@ export function activate(context: vscode.ExtensionContext) {
         await appendContentToCell({
           content: `You are a translator. \nYou will translate the content provided into ${
             translationLanguage ?? "a language to be specified later"
-          } and return it as valid markdown. \nFirst explain potential difficulties one might encounter in translating the specific document given into the the translation language, then return the translation with the explanation of the specific difficulties, and then complete the translation. Explain the difficulties in the source language (e.g., English), and translate only in ${translationLanguage}`,
+          } and return it as valid markdown. \nFirst explain potential difficulties one might encounter in translating the specific document given into the the translation language due to cultural and/or linguistic mismatches, then return the translation with the explanation of the specific difficulties, and then complete the translation. Explain the difficulties in the source language (e.g., English), and translate only in ${translationLanguage}`,
           cell: cell,
         })
 
